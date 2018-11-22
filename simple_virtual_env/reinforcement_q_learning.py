@@ -54,24 +54,23 @@ We'll also use the following from PyTorch:
 
 """
 
-import gym
 import math
 import random
-import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
 from collections import namedtuple
 from itertools import count
-from PIL import Image
 
-from virtual_env import VirtualEnvironment
-
+import gym
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
 import torch
 import torch.nn as nn
-import torch.optim as optim
 import torch.nn.functional as F
+import torch.optim as optim
 import torchvision.transforms as T
+from PIL import Image
 
+from simple_virtual_env.virtual_env import VirtualEnvironment
 
 reference_env = gym.make('CartPole-v0').unwrapped
 env = VirtualEnvironment(host_tcp='localhost', port_tcp=18000)
