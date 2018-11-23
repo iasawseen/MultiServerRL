@@ -1,3 +1,8 @@
 # MultiServerRL
+### Dependencies
+`PIL`
 
-In order to launch learning one should run virtual_env_worker first and then reinforcement_q_learning.py.
+### Run
+In order to launch learning one should run `server` first and then `client`.
+
+### Structure
