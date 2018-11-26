@@ -1,4 +1,5 @@
 import torch
+import torch.nn.functional as F
 import random
 from collections import namedtuple
 
@@ -34,14 +35,15 @@ class DQNTrainingWorker:
         transitions = self.memory.sample(self.batch_size)
         # Transpose the batch (see http://stackoverflow.com/a/19343/3343043 for
         # detailed explanation).
+        #print(list(zip(*transitions))[0])
         batch = Transition(*zip(*transitions))
-
+ 
         # Compute a mask of non-final states and concatenate the batch elements
         non_final_mask = torch.tensor(tuple(map(lambda s: s is not None,
                                                 batch.next_state)), device=self.device, dtype=torch.uint8)
 
-        non_final_next_states = torch.cat([s for s in batch.next_state if s is not None])
-        state_batch = torch.cat(batch.state)
+        non_final_next_states = torch.stack([s for s in batch.next_state if s is not None])
+        state_batch = torch.stack(batch.state)
         action_batch = torch.cat(batch.action)
         reward_batch = torch.cat(batch.reward)
 
