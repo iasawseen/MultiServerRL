@@ -1,7 +1,7 @@
 import argparse
 import multiprocessing
 
-from workers.virtual_env_worker import work
+from workers.real_env_worker import work
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Running server')

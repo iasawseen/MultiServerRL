@@ -2,8 +2,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 ######################################################################
-# Now, let's define our model. But first, let quickly recap what a DQN is.
-#
 # DQN algorithm
 # -------------
 #
