@@ -13,13 +13,12 @@ def training_worker(args):
 
 
 class DQNTrainingWorker:
-    def __init__(self, model, target_model, optimizer, replay_queue, batch_size, gamma,
-                 device=torch.device("cuda" if torch.cuda.is_available() else "cpu")):
+    def __init__(self, model, target_model, optimizer, replay_queue, batch_size, gamma):
         self.model = model
         self.target_model = target_model
         self.optimizer = optimizer
         self.gamma = gamma
-        self.device = device
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.replay_queue = replay_queue
         self.memory = ReplayMemory(10000)
         self.batch_size = batch_size

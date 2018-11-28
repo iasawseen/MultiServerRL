@@ -32,14 +32,12 @@ class AgentWithExploration(Agent):
     """
     Adds some exploration to given model
     """
-    def __init__(self, model, eps_end=0.05, eps_start=0.9, eps_decay=200,
-                 device=torch.device("cuda" if torch.cuda.is_available() else "cpu")):
+    def __init__(self, model, eps_end=0.05, eps_start=0.9, eps_decay=200):
         super().__init__(model)
         self.steps_done = 0
         self.eps_end = eps_end
         self.eps_start = eps_start
         self.eps_decay = eps_decay
-        self.device = device
 
     def act(self, observation):
         sample = random.random()
@@ -49,7 +47,7 @@ class AgentWithExploration(Agent):
         if sample > eps_threshold:
             return super().act(observation)
         else:
-            return torch.tensor([[random.randrange(2)]], device=self.device, dtype=torch.long)
+            return torch.tensor([[random.randrange(2)]], dtype=torch.long)
 
 
 def model_worker(real_agent, action_connections, observation_connections):

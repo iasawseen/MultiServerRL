@@ -9,13 +9,12 @@ def exploration_worker(args):
 
 
 class ExplorationWorker:
-    def __init__(self, env, agent, replay_queue, episodes,
-                 device=torch.device("cuda" if torch.cuda.is_available() else "cpu")):
+    def __init__(self, env, agent, replay_queue, episodes):
         self.env = env
         self.agent = agent
         self.replay_queue = replay_queue
         self.episodes = episodes
-        self.device = device
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     def work(self):
         for _ in range(self.episodes):
@@ -25,7 +24,7 @@ class ExplorationWorker:
 
             for _ in count():
                 # Select and perform an action
-                action = self.agent.act(state)
+                action = self.agent.act(state).to(self.device)
                 observation, reward, done, _ = self.env.step(action.item())
                 total_reward += reward
                 reward = torch.tensor([reward], device=self.device)
