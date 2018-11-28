@@ -19,24 +19,24 @@ class ExplorationWorker:
     def work(self):
         for _ in range(self.episodes):
             # Reset environment
-            state = torch.from_numpy(np.array(self.env.reset())).float().to(self.device)
+            state = np.array(self.env.reset(), dtype=np.float32)
             total_reward = 0
 
             for _ in count():
                 # Select and perform an action
                 action = self.agent.act(state).to(self.device)
-                observation, reward, done, _ = self.env.step(action.item())
+                observation, reward, done, _ = self.env.step(action)
                 total_reward += reward
-                reward = torch.tensor([reward], device=self.device)
+                reward = [reward]
                 
                 if done:
                     break
                     
                 # Observe new state
-                next_state = torch.from_numpy(np.array(observation)).float().to(self.device)
+                next_state = np.array(observation, dtype=np.float32)
                 
                 # Store the transition in memory
-                self.replay_queue.put((state, action, next_state, reward))
+                self.replay_queue.put((state, [action], next_state, reward))
 
                 # Move to the next state
                 state = next_state

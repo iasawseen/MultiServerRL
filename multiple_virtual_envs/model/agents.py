@@ -22,10 +22,13 @@ class Agent:
     """
     def __init__(self, model):
         self.model = model
+        self.device = None
 
     def act(self, observation):
+        if self.device is None:
+            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         with torch.no_grad():
-            return self.model(observation).max(0)[1].view(1, 1)
+            return self.model(torch.tensor(observation, device=self.device)).max(0)[1].view(1, 1).item()
 
 
 class AgentWithExploration(Agent):
@@ -47,7 +50,7 @@ class AgentWithExploration(Agent):
         if sample > eps_threshold:
             return super().act(observation)
         else:
-            return torch.tensor([[random.randrange(2)]], dtype=torch.long)
+            return random.randrange(2)
 
 
 def model_worker(real_agent, action_connections, observation_connections):
