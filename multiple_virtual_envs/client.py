@@ -20,6 +20,7 @@ if __name__ == '__main__':
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+    # Prepare model
     model = DQN()
     target_model = DQN()
 
@@ -32,13 +33,16 @@ if __name__ == '__main__':
     model.share_memory()
     target_model.share_memory()
 
+    # Create connections between model worker and exploration workers
     action_connections = [multiprocessing.Pipe(duplex=False) for i in range(arguments.count)]
     observation_connections = [multiprocessing.Pipe(duplex=False) for i in range(arguments.count)]
-    replay_queue = multiprocessing.Queue()
+    # Connection between training worker and exploration workers
+    replay_queue = multiprocessing.Queue(128)
 
     join_processes = []
     processes = []
     try:
+        # Start model_worker process
         p = multiprocessing.Process(target=model_worker, args=[
             AgentWithExploration(model),
             [conn[1] for conn in action_connections],
@@ -47,6 +51,7 @@ if __name__ == '__main__':
         processes.append(p)
         p.start()
 
+        # Start exploration workers one by one
         for i in range(arguments.count):
             p = multiprocessing.Process(target=exploration_worker, args=[{
                 "env": VirtualEnvironment(arguments.host, arguments.port + i),
@@ -58,6 +63,7 @@ if __name__ == '__main__':
             processes.append(p)
             p.start()
 
+        # Training worker
         p = multiprocessing.Process(target=training_worker, args=[{
             "model": model,
             "target_model": target_model,

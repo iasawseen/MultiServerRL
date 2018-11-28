@@ -1,5 +1,6 @@
 import torch
 import torch.nn.functional as F
+import queue
 import random
 from collections import namedtuple
 
@@ -25,8 +26,16 @@ class DQNTrainingWorker:
 
     def work(self):
         while True:
-            observation, action, next_observation, reward = self.replay_queue.get()
-            self.memory.push(observation, action, next_observation, reward)
+            # Get replays from queue
+            try:
+                # Limit maximum count of gained replays per one optimization
+                for _ in range(self.batch_size):
+                    observation, action, next_observation, reward = self.replay_queue.get(False)
+                    self.memory.push(observation, action, next_observation, reward)
+            except queue.Empty:
+                # Means that there are no new replays
+                pass
+            # One optimization step
             self.optimize_model()
 
     def optimize_model(self):

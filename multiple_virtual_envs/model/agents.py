@@ -4,6 +4,9 @@ import torch
 
 
 class RemoteAgent:
+    """
+    Remote agent which sends observations to model worker and returns action
+    """
     def __init__(self, action_connection, observation_connection):
         self.action_connection = action_connection
         self.obseravtion_connection = observation_connection
@@ -14,6 +17,9 @@ class RemoteAgent:
 
 
 class Agent:
+    """
+    Simply applies model to observation and returns resulting action
+    """
     def __init__(self, model):
         self.model = model
 
@@ -23,6 +29,9 @@ class Agent:
 
 
 class AgentWithExploration(Agent):
+    """
+    Adds some exploration to given model
+    """
     def __init__(self, model, eps_end=0.05, eps_start=0.9, eps_decay=200,
                  device=torch.device("cuda" if torch.cuda.is_available() else "cpu")):
         super().__init__(model)

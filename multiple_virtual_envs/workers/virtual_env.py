@@ -13,6 +13,9 @@ class VirtualEnvironment(gym.Env):
 
     @staticmethod
     def _make_request(request, json_data=None):
+        """
+        Common for all HTTP requests
+        """
         if json_data is None:
             json_data = {}
 

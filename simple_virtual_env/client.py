@@ -72,7 +72,10 @@ from PIL import Image
 
 from simple_virtual_env.virtual_env import VirtualEnvironment
 
+# Needed only for get some environment parameters
 reference_env = gym.make('CartPole-v0').unwrapped
+
+# Here we create virtual environment instead real environment
 env = VirtualEnvironment(host_tcp='localhost', port_tcp=18000)
 
 

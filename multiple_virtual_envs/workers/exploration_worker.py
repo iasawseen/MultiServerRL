@@ -19,11 +19,11 @@ class ExplorationWorker:
 
     def work(self):
         for _ in range(self.episodes):
+            # Reset environment
             state = torch.from_numpy(np.array(self.env.reset())).float().to(self.device)
-            
             total_reward = 0
 
-            for t in count():
+            for _ in count():
                 # Select and perform an action
                 action = self.agent.act(state)
                 observation, reward, done, _ = self.env.step(action.item())

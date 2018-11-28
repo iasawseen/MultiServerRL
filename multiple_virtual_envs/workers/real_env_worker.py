@@ -8,6 +8,7 @@ from pyramid.response import Response
 
 import multiprocessing
 
+# Create real environment
 env = gym.make('CartPole-v0').unwrapped
 
 
@@ -67,6 +68,9 @@ def post_state_request(request):
 
 
 def work(host, port):
+    """
+    Starts server on given host and port
+    """
     with Configurator() as config:
         config.add_route('post_step_request', '/post_step_request/')
         config.add_view(post_step_request, route_name='post_step_request', request_method='POST')
@@ -90,26 +94,4 @@ def work(host, port):
 
     server = make_server(host, port, app)
     server.serve_forever()
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Running server')
-    parser.add_argument('--host', type=str, default='localhost', help='')
-    parser.add_argument('--port', type=int, default=18000, help='')
-    parser.add_argument('--count', type=int, default=4, help='')
-
-    arguments = parser.parse_args()
-
-    processes = []
-    try:
-        for i in range(arguments.count):
-            p = multiprocessing.Process(target=work, args=(arguments.host, arguments.port + i))
-            processes.append(p)
-            p.start()
-
-        for p in processes:
-            p.join()
-    finally:
-        for p in processes:
-            p.terminate()
 
