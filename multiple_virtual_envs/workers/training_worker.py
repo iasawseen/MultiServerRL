@@ -48,19 +48,19 @@ class DQNTrainingWorker:
  
         # Compute a mask of non-final states and concatenate the batch elements
         non_final_mask = torch.tensor(tuple(map(lambda s: s is not None,
-                                                batch.next_state)), device=self.device)
+                                                batch.next_state))).to(device=self.device)
 
-        non_final_next_states = torch.tensor([s for s in batch.next_state if s is not None], device=self.device)
-        state_batch = torch.tensor(batch.state, device=self.device)
-        action_batch = torch.tensor(batch.action, device=self.device)
-        reward_batch = torch.tensor(batch.reward, device=self.device)
+        non_final_next_states = torch.tensor([s for s in batch.next_state if s is not None]).to(device=self.device)
+        state_batch = torch.tensor(batch.state).to(device=self.device)
+        action_batch = torch.tensor(batch.action).to(device=self.device)
+        reward_batch = torch.tensor(batch.reward).to(device=self.device)
 
         # Compute Q(s_t, a) - the model computes Q(s_t), then we select the
         # columns of actions taken
         state_action_values = self.model(state_batch).gather(1, action_batch)
 
         # Compute V(s_{t+1}) for all next states.
-        next_state_values = torch.zeros(self.batch_size, device=self.device)
+        next_state_values = torch.zeros(self.batch_size).to(device=self.device)
         next_state_values[non_final_mask] = self.target_model(non_final_next_states).max(1)[0].detach()
         # Compute the expected Q values
         expected_state_action_values = (next_state_values * self.gamma) + reward_batch

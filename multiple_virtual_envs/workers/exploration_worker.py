@@ -27,7 +27,7 @@ class ExplorationWorker:
                 action = self.agent.act(state).to(self.device)
                 observation, reward, done, _ = self.env.step(action)
                 total_reward += reward
-                reward = [reward]
+                reward = reward
                 
                 if done:
                     break

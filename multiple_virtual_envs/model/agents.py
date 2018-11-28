@@ -28,7 +28,7 @@ class Agent:
         if self.device is None:
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         with torch.no_grad():
-            return self.model(torch.tensor(observation, device=self.device)).max(0)[1].view(1, 1).item()
+            return self.model(torch.tensor(observation).to(device=self.device)).max(0)[1].view(1, 1).item()
 
 
 class AgentWithExploration(Agent):
