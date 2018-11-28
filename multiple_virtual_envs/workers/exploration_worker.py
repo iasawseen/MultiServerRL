@@ -24,7 +24,7 @@ class ExplorationWorker:
 
             for _ in count():
                 # Select and perform an action
-                action = self.agent.act(state).to(self.device)
+                action = self.agent.act(state)
                 observation, reward, done, _ = self.env.step(action)
                 total_reward += reward
                 reward = reward
