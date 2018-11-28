@@ -10,6 +10,12 @@ from workers.exploration_worker import exploration_worker
 from workers.training_worker import training_worker
 from workers.virtual_env import VirtualEnvironment
 
+from multiprocessing import set_start_method
+try:
+    set_start_method('spawn')
+except RuntimeError:
+    pass
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Running client')
     parser.add_argument('--host', type=str, default='localhost', help='')
