@@ -1,4 +1,8 @@
 # MultiServerRL
+## About
+Here you can find two simple examples of server-client reinforcement learning.
+* **simple_virtual_env** shows how to start environment on server and use it by making HTTP requests
+* **multiple_virtual_envs** shows how to start more then one environment and use them
 ## Dependencies
 #### Server
 `pyramid` - Framework for simple HTTP server creation
@@ -26,7 +30,7 @@ By default server and client assumes that host is `localhost` and port is `1800`
 You can pass specific host by using key `--host` and port by using `--port`. 
 
 Additionally in `multiple_virtual_envs` example you can pass count of virtal (client) and real (server) environments running by using `--count`. 
-Remember that count of virtual and real environments should be the same.
+Remember that count of virtual and real environments should be the same. Also you can pass episodes per explorer count by using `--episodes`.
 
 ## Structure
 ### One virtual environments example

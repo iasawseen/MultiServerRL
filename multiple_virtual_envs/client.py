@@ -21,6 +21,7 @@ if __name__ == '__main__':
     parser.add_argument('--host', type=str, default='localhost', help='')
     parser.add_argument('--port', type=int, default=18000, help='')
     parser.add_argument('--count', type=int, default=2, help='')
+    parser.add_argument('--episodes', type=int, default=128, help='')
 
     arguments = parser.parse_args()
 
@@ -50,7 +51,7 @@ if __name__ == '__main__':
     try:
         # Start model_worker process
         p = multiprocessing.Process(target=model_worker, args=[
-            AgentWithExploration(model),
+            AgentWithExploration(model, eps_decay=arguments.episodes * arguments.count * 200),
             [conn[1] for conn in action_connections],
             [conn[0] for conn in observation_connections]
         ])
@@ -63,7 +64,7 @@ if __name__ == '__main__':
                 "env": VirtualEnvironment(arguments.host, arguments.port + i),
                 "agent": RemoteAgent(action_connections[i][0], observation_connections[i][1]),
                 "replay_queue": replay_queue,
-                "episodes": 256,
+                "episodes": arguments.episodes,
                 "worker_id": i + 1
             }])
             join_processes.append(p)
