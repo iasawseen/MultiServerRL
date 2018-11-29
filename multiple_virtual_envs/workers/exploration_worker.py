@@ -9,15 +9,16 @@ def exploration_worker(args):
 
 
 class ExplorationWorker:
-    def __init__(self, env, agent, replay_queue, episodes):
+    def __init__(self, env, agent, replay_queue, episodes, worker_id):
         self.env = env
         self.agent = agent
         self.replay_queue = replay_queue
         self.episodes = episodes
+        self.worker_id = worker_id
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     def work(self):
-        for _ in range(self.episodes):
+        for episode in range(self.episodes):
             # Reset environment
             state = np.array(self.env.reset(), dtype=np.float32)
             total_reward = 0
@@ -41,4 +42,4 @@ class ExplorationWorker:
                 # Move to the next state
                 state = next_state
                 
-            print(total_reward)
+            print("Worker:", self.worker_id, "Episode:", episode, "Score:", total_reward)

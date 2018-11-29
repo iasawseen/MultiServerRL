@@ -63,7 +63,8 @@ if __name__ == '__main__':
                 "env": VirtualEnvironment(arguments.host, arguments.port + i),
                 "agent": RemoteAgent(action_connections[i][0], observation_connections[i][1]),
                 "replay_queue": replay_queue,
-                "episodes": 64
+                "episodes": 256,
+                "worker_id": i + 1
             }])
             join_processes.append(p)
             processes.append(p)
