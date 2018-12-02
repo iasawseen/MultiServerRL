@@ -13,7 +13,7 @@ def training_worker(args):
 
 
 class DQNTrainingWorker:
-    def __init__(self, model, target_model, optimizer, replay_queue, batch_size, gamma):
+    def __init__(self, model, target_model, optimizer, replay_queue, batch_size, gamma, target_update=2000):
         self.model = model
         self.target_model = target_model
         self.optimizer = optimizer
@@ -22,6 +22,8 @@ class DQNTrainingWorker:
         self.replay_queue = replay_queue
         self.memory = ReplayMemory(10000)
         self.batch_size = batch_size
+        self.target_update = target_update
+        self.updates = 0
 
     def work(self):
         while True:
@@ -36,6 +38,10 @@ class DQNTrainingWorker:
                 pass
             # One optimization step
             self.optimize_model()
+            self.updates += 1
+
+            if self.updates % self.target_update == 0:
+                self.target_model.load_state_dict(self.model.state_dict())
 
     def optimize_model(self):
         if len(self.memory) < self.batch_size:
