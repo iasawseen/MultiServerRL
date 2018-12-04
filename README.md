@@ -61,4 +61,22 @@ This is only description of the files contents. Please, see code for details.
     * **workers/exploration_worker.py** contains worker that receives observations and rewards from environment, puts translation to the replay queue and makes next action which given by agent
     * **workers/virtual_env.py** - virtual environment which provides interface similar to real environment but instead making calculations itself makes HTTP request to corresponding real environment on server
 
+Citing this framework: 
+
+```
+@misc{ivan_sosin_2018_1938263,
+  author       = {Ivan Sosin and
+                  Oleg Svidchenko and
+                  Aleksandra Malysheva and
+                  Daniel Kudenko and
+                  Aleksei Shpilman},
+  title        = {{Framework for Deep Reinforcement Learning with 
+                   GPU-CPU Multiprocessing}},
+  month        = dec,
+  year         = 2018,
+  doi          = {10.5281/zenodo.1938263},
+  url          = {https://doi.org/10.5281/zenodo.1938263}
+}
+```
+
 <a href="https://zenodo.org/badge/latestdoi/158716538"><img src="https://zenodo.org/badge/158716538.svg" alt="DOI"></a>
