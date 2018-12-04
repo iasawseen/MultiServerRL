@@ -60,3 +60,5 @@ This is only description of the files contents. Please, see code for details.
     * **workers/real_env_worker.py** file contains HTTP server worker which runs real CartPole environment and resolves requests
     * **workers/exploration_worker.py** contains worker that receives observations and rewards from environment, puts translation to the replay queue and makes next action which given by agent
     * **workers/virtual_env.py** - virtual environment which provides interface similar to real environment but instead making calculations itself makes HTTP request to corresponding real environment on server
+
+<a href="https://zenodo.org/badge/latestdoi/158716538"><img src="https://zenodo.org/badge/158716538.svg" alt="DOI"></a>
